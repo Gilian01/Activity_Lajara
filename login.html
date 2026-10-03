@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login</title>
+    <link rel="stylesheet" href="style1.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
+
+</head>
+
+<body>
+
+    <main class="login-container">
+
+        <section class="login-box">
+
+            <h1><em>Login</em></h1>
+
+            <p class="description">
+                Explore some more in The Uncanny Counter Series
+            </p>
+
+            <form id="loginForm" novalidate>
+
+                <div class="input-group">
+
+                    <input type="text" id="username" name="username" placeholder="Username">
+
+                </div>
+
+                <div class="input-group">
+
+                    <input type="password" id="password" name="password" placeholder="Password">
+
+                </div>
+
+                <div class="save">
+
+                    <label>
+                        <input type="checkbox" name="remember">
+                        Remember me
+                    </label>
+
+                    <span>Forgot password?</span>
+
+                </div>
+
+
+                <button type="submit" id="login-button">
+                    Login
+                </button>
+
+
+                <p id="login-message"></p>
+
+
+                <p class="account-text">
+
+                    Don't have an account?
+
+                    <a href="register.html">
+                        Register
+                    </a>
+
+                </p>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            var attempts = 0;
+            var locked = false;
+
+
+            $("#loginForm").validate({
+
+                rules: {
+
+                    username: {
+                        required: true,
+                        minlength: 3
+                    },
+
+                    password: {
+                        required: true,
+                        minlength: 5
+                    }
+
+                },
+
+
+                messages: {
+
+                    username: {
+                        required: "Please enter your username.",
+                        minlength: "Username must be at least 3 characters."
+                    },
+
+                    password: {
+                        required: "Please enter your password.",
+                        minlength: "Password must be at least 5 characters."
+                    }
+
+                },
+
+                errorClass: "input-error",
+                errorElement: "label",
+
+
+                errorPlacement: function (error, element) {
+
+                    error.insertAfter(element);
+
+                },
+
+                submitHandler: function (form) {
+
+                    if (locked) {
+                        return false;
+                    }
+
+                    var username = $("#username").val().trim();
+                    var password = $("#password").val();
+
+                    var correctUsername = "lajara";
+                    var correctPassword = "gilianf";
+
+                    if (
+                        username === correctUsername &&
+                        password === correctPassword
+                    ) {
+
+                        sessionStorage.setItem(
+                            "loggedIn",
+                            "true"
+                        );
+
+                        sessionStorage.setItem(
+                            "username",
+                            username
+                        );
+
+
+                        $("#login-message")
+                            .removeClass("error-message")
+                            .addClass("success-message")
+                            .text("Login successful! Redirecting...");
+
+
+                        $("#login-button")
+                            .prop("disabled", true);
+
+
+                        setTimeout(function () {
+
+                            window.location.href = "landingpage.html";
+
+                        }, 700);
+
+
+                        return false;
+
+                    }
+
+                    attempts++;
+
+                    if (attempts >= 3) {
+
+                        locked = true;
+
+
+                        $("#username")
+                            .prop("disabled", true);
+
+                        $("#password")
+                            .prop("disabled", true);
+
+                        $("#login-button")
+                            .prop("disabled", true);
+
+
+                        var seconds = 10;
+
+
+                        $("#login-message")
+                            .removeClass("success-message")
+                            .addClass("error-message")
+                            .text(
+                                "Too many failed attempts. Try again in "
+                                + seconds +
+                                " seconds."
+                            );
+
+                        var timer = setInterval(function () {
+
+                            seconds--;
+
+
+                            if (seconds > 0) {
+
+                                $("#login-message")
+                                    .text(
+                                        "Too many failed attempts. Try again in "
+                                        + seconds +
+                                        " seconds."
+                                    );
+
+                            }
+
+                            else {
+
+                                clearInterval(timer);
+
+
+                                attempts = 0;
+
+                                locked = false;
+
+
+                                $("#username")
+                                    .prop("disabled", false);
+
+                                $("#password")
+                                    .prop("disabled", false);
+
+                                $("#login-button")
+                                    .prop("disabled", false);
+
+
+                                $("#password").val("");
+
+
+                                $("#login-message")
+                                    .removeClass("error-message")
+                                    .text(
+                                        "You can try logging in again."
+                                    );
+
+                            }
+
+                        }, 1000);
+
+                    }
+
+                    else {
+
+                        var remaining = 3 - attempts;
+
+
+                        $("#login-message")
+                            .removeClass("success-message")
+                            .addClass("error-message")
+                            .text(
+                                "Incorrect username or password. "
+                                + remaining +
+                                " attempt(s) remaining."
+                            );
+
+                    }
+
+
+                    return false;
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>

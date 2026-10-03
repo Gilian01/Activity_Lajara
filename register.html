@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="style1.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.22.1/jquery.validate.min.js"
+        integrity="sha512-qu7dMuIm2f0KcKZ3BOoP4c+Hn+r4E8PbD2Ro4rmKsOyheCxcwhzQpf6SojA76dn+owqfANzfTFUTkGA+HpHjOA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</head>
+
+<body>
+    <main class="register-container">
+        <section class="register-box">
+            <h1><em>Register</em></h1>
+
+            <p class="description">
+                Welcome! Register now to create your account and get started.
+            </p>
+
+            <form id="registerForm">
+                <div class="input-group">
+                    <input type="text" id="username" name="username" placeholder="Username" required>
+                </div>
+
+                <div class="input-group">
+                    <input type="email" id="email" name="email" placeholder="Email Address" required>
+                </div>
+
+                <div class="input-group">
+                    <input type="tel" id="phone" name="phone" placeholder="Phone Number" required>
+                </div>
+
+                <div class="input-group">
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+
+                <div class="input-group">
+                    <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password"
+                        required>
+                </div>
+
+                <button type="submit">
+                    Register
+                </button>
+
+                <p class="account-text">
+                    Already have an account?
+                    <a href="login.html">Login Here</a>
+                </p>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#registerForm").validate({
+
+                rules: {
+
+                    username: {
+                        required: true,
+                        minlength: 6,
+                        lettersOnly: true
+                    },
+
+                    email: {
+                        required: true
+                    },
+
+                    phone : {
+                        required: true,
+                        minlength: 11
+                    },
+
+                    password: {
+                        required: true,
+                        minlength: 8
+                    },
+
+                    "confirm-password": {
+                        required: true,
+                        equalTo: "#password"
+                    }
+
+                },
+
+               messages: {
+
+                    username: {
+                        required: "Please enter your name.",
+                        minlength: "Name must be at least 6 letters."
+                    },
+
+                    email: {
+                        required: "Please enter your email address.",
+                        email: "Please enter a valid email address."
+                    },
+
+                    phone: {
+                        required: "Please enter your phone number.",
+                        minlength: "Please enter 11 numbers."
+                    },
+
+                    password: {
+                        required: "Please enter your password.",
+                        minlength: "Password must be at least 8 characters."
+                    },
+
+                    "confirm-password": {
+                        required: "Please confirm your password.",
+                        equalTo: "Passwords do not match."
+                    }
+
+                },
+
+                submitHandler: function (form) {
+
+                    alert("Registration successful! You can now login.");
+
+                    window.location.href = "login.html";
+
+                }
+
+            });
+
+        });
+
+    </script>
+</body>
+
+</html>
